@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GUTANGLE – Continuous EGG Monitoring</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- LIGHT-RAYS BACKGROUND -->
+  <canvas id="lightRaysCanvas" class="light-rays-container"></canvas>
+
+  <main class="app-shell">
+    <!-- LEFT: EGG info -->
+    <section class="hero-side">
+      <div class="hero-logo-row">
+        <div class="logo-circle">
+          <img src="images/icon.png" alt="GUTANGLE logo" />
+        </div>
+        <div>
+          <div class="hero-badge">
+            <span class="hero-dot"></span>
+            CONTINUOUS EGG MONITORING
+          </div>
+        </div>
+      </div>
+
+      <h1 class="hero-title">
+        GUTANGLE
+        <span>REAL‑TIME EGG</span>
+      </h1>
+
+      <p class="hero-copy">
+        Capture continuous electrogastrography (EGG) signals, visualize gastric slow waves in real time,
+        and track motility changes across long recordings.
+      </p>
+
+      <div class="hero-metrics">
+        <div class="metric-pill">
+          <span class="dot"></span>
+          <strong>0.05–0.15 Hz</strong> gastric rhythm band
+        </div>
+        <div class="metric-pill">
+          <span class="dot"></span>
+          <strong>Multi‑channel</strong> abdominal leads
+        </div>
+        <div class="metric-pill">
+          <span class="dot"></span>
+          <strong>Hypo/Hyper‑</strong> motility flags
+        </div>
+      </div>
+
+      <p class="hero-footer">
+        Built for GI labs, motility clinics, and translational research teams.
+        <span>Stream and label EGG data in one place.</span>
+      </p>
+
+      <div class="hero-fuzzy-row">
+        <span class="hero-fuzzy-label">Recording status</span>
+        <canvas id="fuzzyCanvas"></canvas>
+      </div>
+    </section>
+
+    <!-- RIGHT: SIGNUP (PRIMARY) / SIGNIN -->
+    <section class="auth-side">
+      <div class="auth-tabs">
+        <div class="auth-tab-pill" id="tabPill" data-mode="signup"></div>
+        <button class="auth-tab" id="tabSignup" data-active="true">Sign up</button>
+        <button class="auth-tab" id="tabSignin" data-active="false">Sign in</button>
+      </div>
+
+      <h2 class="auth-title" id="authTitle">Create your EGG workspace</h2>
+      <p class="auth-caption" id="authCaption">
+        Start by creating an account for your GI lab or research team.
+        <span>Sign up is free.</span>
+      </p>
+
+      <!-- SIGNUP -->
+      <form id="signupForm" class="auth-form" data-active="true" autocomplete="off">
+        <div class="field-group">
+          <label class="field-label">Full name</label>
+          <div class="field-control">
+            <input class="field-input" type="text" name="name" placeholder="Ms. Sweety" required />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Mobile number</label>
+          <div class="field-control">
+            <input class="field-input" type="tel" name="mobile" placeholder="+91 8940423362" required />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Email ID</label>
+          <div class="field-control">
+            <input class="field-input" type="email" name="email" placeholder="biomedicalengineering@gmail.com" required />
+          </div>
+        </div>
+
+        <div class="field-inline">
+          <div class="field-group">
+            <label class="field-label">Age</label>
+            <div class="field-control">
+              <input class="field-input" type="number" name="age" min="10" max="120" placeholder="20" required />
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Password</label>
+            <div class="field-control">
+              <input class="field-input" type="password" name="password" placeholder="Create a strong password" required />
+            </div>
+            <p class="hint">Use at least <strong>8 characters</strong> with numbers and symbols.</p>
+          </div>
+        </div>
+
+        <button type="submit" class="primary-btn">Create monitoring account</button>
+
+        <div class="form-footer-row">
+          <span>Already have an account?</span>
+          <button type="button" class="link-btn" id="toSigninLink">Sign in</button>
+        </div>
+
+        <p class="tiny-note">
+          By continuing, you agree to strict GI‑data privacy and
+          <span>clinical‑grade security</span>.
+        </p>
+      </form>
+
+      <!-- SIGNIN -->
+      <form id="signinForm" class="auth-form" data-active="false" autocomplete="off">
+        <div class="field-group">
+          <label class="field-label">Email ID</label>
+          <div class="field-control">
+            <input class="field-input" type="email" name="email" placeholder="biomedicalengineering@gmail.com" required />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Password</label>
+          <div class="field-control">
+            <input class="field-input" type="password" name="password" placeholder="Enter your password" required />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Security check</label>
+          <div class="captcha-box">
+            <span class="captcha-text" id="captchaText"></span>
+            <button type="button" class="captcha-refresh" id="captchaRefresh">Refresh</button>
+          </div>
+          <div class="captcha-input">
+            <input class="field-input" type="text" id="captchaInput" placeholder="Type the code above" required />
+          </div>
+        </div>
+
+        <div class="form-footer-row">
+          <span></span>
+          <button type="button" class="link-btn" id="forgotPassword">Forgot password?</button>
+        </div>
+
+        <p id="signinError" class="error-msg" style="display:none;">Captcha does not match. Try again.</p>
+
+        <button type="submit" class="primary-btn">Sign in to EGG dashboard</button>
+
+        <p class="tiny-note">
+          Access is logged with device fingerprinting and
+          <span>anomaly detection</span>.
+        </p>
+      </form>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span>or continue with</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="social-row">
+        <button type="button" class="social-btn" id="googleLogin">
+          <span class="social-icon google">G</span>
+          <span>Google</span>
+        </button>
+        <button type="button" class="social-btn" id="instagramLogin">
+          <span class="social-icon ig">IG</span>
+          <span>Instagram</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
